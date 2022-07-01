@@ -1,6 +1,6 @@
 from django.db import models
-from moses import CustomUser
-from ..accounts.models import Company
+from moses.models import CustomUser
+from walt.accounts.models import Company
 
 class Job(models.Model):
     company_name = models.ForeignKey(Company, related_name='Company', on_delete=models.CASCADE)

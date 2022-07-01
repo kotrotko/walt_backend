@@ -1,9 +1,9 @@
 from django.db import models
-import moses
+
 from moses.models import CustomUser
 
 class Company(models.Model):
-    company_name = models.CharField(CustomUser)
+    company_name = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     first_name = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     last_name = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     position = models.CharField(max_length=200)
