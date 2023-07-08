@@ -17,17 +17,22 @@ class JobseekerSerializerTestCase(TestCase):
         self.user = user_serializer.save()
         print(self.user)
 
+        cv_file_content = b"cv_file_content"
+        cv_file = SimpleUploadedFile('cv.pdf', cv_file_content, content_type="application/pdf")
+
         self.jobseeker_data = {
             'first_name': 'John',
             'phone_number': '+33612345678',
-            'cv': SimpleUploadedFile('cv.pdf', b"cv_file_content", content_type="application/pdf")
+            'cv': cv_file
         }
 
         serializer = JobseekerSerializer(data=self.jobseeker_data)
-        print(self.jobseeker_data['phone_number'])
         self.assertTrue(serializer.is_valid(), serializer.errors)
         self.jobseeker = serializer.save(user_id=self.user.id)
 
+    def tearDown(self):
+        if self.jobseeker.cv:
+            self.jobseeker.cv.delete()
     def test_create_user(self):
         self.assertEqual(self.user.email, 'jobseeker@example.com')
         self.assertEqual(self.user.roles, 'jobseeker')

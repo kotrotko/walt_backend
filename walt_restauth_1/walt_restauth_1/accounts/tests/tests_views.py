@@ -2,7 +2,7 @@ from django.urls import reverse
 
 from rest_framework import status
 from rest_framework.test import APITestCase
-from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
+from rest_framework_simplejwt.tokens import AccessToken
 
 from faker import Faker
 
@@ -27,3 +27,4 @@ class TestUserRecordView(APITestCase):
         response = self.client.post(url, {'email': email, 'password': password, 'roles': roles}, format='json', headers=headers)
         print(response.data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
