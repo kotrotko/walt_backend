@@ -33,6 +33,7 @@ class JobseekerSerializerTestCase(TestCase):
     def tearDown(self):
         if self.jobseeker.cv:
             self.jobseeker.cv.delete()
+
     def test_create_user(self):
         self.assertEqual(self.user.email, 'jobseeker@example.com')
         self.assertEqual(self.user.roles, 'jobseeker')

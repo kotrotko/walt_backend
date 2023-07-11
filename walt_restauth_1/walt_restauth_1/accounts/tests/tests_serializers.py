@@ -44,7 +44,6 @@ class TestCustomUserCreateSerializer(APITestCase):
         timestamp = str(int(time.time()))
         random_suffix = str(random.randint(100, 999))
         email = f'test{timestamp}{random_suffix}@example.com'
-        # email = 'testemail@example.com'
         data = {
             'email': email,
             'password': 'testpassword',

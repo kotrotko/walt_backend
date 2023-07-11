@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate
+from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import gettext as _
 
 from rest_framework import serializers, exceptions
@@ -19,6 +20,7 @@ class PasswordResetSerializer(serializers.Serializer):
 
 class CustomUserCreateSerializer(serializers.ModelSerializer):
     roles = serializers.ChoiceField(choices=CustomUser.ROLES)
+    # email = serializers.EmailField(required=True) # Update: made email field required
 
     def create(self, validated_data):
         user = CustomUser.objects.create(
@@ -30,9 +32,14 @@ class CustomUserCreateSerializer(serializers.ModelSerializer):
 
         return user
 
+    def validate_email(self,value):
+        try:
+            CustomUser.objects.get(email=value)
+            raise serializers.ValidationError('This email is already in use.')
+        except ObjectDoesNotExist:
+            return value
+
     def validate(self, data):
-        if 'email' not in data:
-            raise serializers.ValidationError("Email field is required")
         if 'password' not in data:
             raise serializers.ValidationError("Password field is required")
         return data
@@ -48,15 +55,6 @@ class CustomUserCreateSerializer(serializers.ModelSerializer):
             'roles',
         ]
         read_only_fields = ['roles']
-
-        def create(self, validated_data):
-            user = CustomUser.objects.create(
-                email=validated_data['email'],
-            )
-            user.set_password(validated_data['password'])
-            user.save()
-
-            return user
 
 class TokenObtainPairSerializer(TokenObtainSerializer):
     default_error_messages = {

@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.http import HttpResponseRedirect
 
+from rest_framework.exceptions import ValidationError
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -32,20 +33,26 @@ class UserRecordView(APIView):
 
     def post(self, request, *args, **kwargs):
         serializer = CustomUserCreateSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=ValueError):
-            serializer.create(validated_data=request.data)
+        serializer.is_valid(raise_exception=True)
 
-            return Response(
-                serializer.data,
+        # user = serializer.save()
+        try:
+            user = serializer.save()
+        except ValidationError as e:
+            return Response({"email": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+        response_data = {
+            # "id": user.id,
+            "email": user.email,
+            "roles": user.roles,
+        }
+        if user.pk is None:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(
+                response_data,
                 status=status.HTTP_201_CREATED
             )
-        return Response(
-            {
-                "error": True,
-                "error_msg": serializer.errors,
-            },
-            status=status.HTTP_400_BAD_REQUEST
-        )
 
     def get_queryset(self):
         return self.queryset

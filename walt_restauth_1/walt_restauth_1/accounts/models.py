@@ -20,7 +20,7 @@ class CustomUserManager(BaseUserManager):
             Use 'create_user' or 'create_superuser' instead.
         """
         if not email:
-            raise ValueError('Email is Required')
+            raise ValueError('Email is Required.')
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
@@ -67,7 +67,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         ('jobseeker', 'Jobseeker'),
     )
     roles = models.CharField(max_length=20, choices=ROLES, default='jobseeker')
-    email = models.EmailField(max_length=30, verbose_name='Email', blank=True, null=True, unique=True)
+    email = models.EmailField(max_length=30, verbose_name='Email', blank=False, null=True, unique=True)
 
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
