@@ -1,6 +1,20 @@
-#import sys
 import os
 from pathlib import Path
+
+import dotenv
+dotenv.load_dotenv()
+
+from django.core.exceptions import ImproperlyConfigured
+
+def get_env_setting(setting, default=None):
+    """ Get the environment setting or return exceptin """
+    try:
+        return os.environ[setting]
+    except KeyError:
+        if default is not None:
+            return default
+        error_msg = "Set the %s env variable" % setting
+        raise ImproperlyConfigured(error_msg)
 
 #BASE_DIR = Path(__file__).resolve().parent.parent
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -117,19 +131,9 @@ REST_FRAMEWORK = {
     ],
 }
 
-# REST_AUTH = {
-#     'USE_JWT': True,
-#     'JWT_AUTH_COOKIE': '',
-#     'JWT_AUTH_REFRESH_COOKIE': '',
-# }
-#REGISTER_SERIALIZER
-
 REST_USE_JWT = True
 
 SITE_ID = 1
-
-# JWT_AUTH_COOKIE = 'walt_restauth_1'
-# JWT_AUTH_REFRESH_COOKIE = 'my-refresh-token'
 
 ROOT_URLCONF = 'walt_restauth_1.urls'
 
@@ -153,10 +157,18 @@ WSGI_APPLICATION = 'walt_restauth_1.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': get_env_setting('POSTGRES_DB'),
+        'USER': get_env_setting('POSTGRES_USER'),
+        'PASSWORD': get_env_setting('POSTGRES_PASSWORD'),
+        'HOST': get_env_setting('POSTGRES_HOST'),
+        'PORT': int(get_env_setting('POSTGRES_PORT', '5432'))
     }
 }
+
+# DATABASES['default']['TEST'] = {
+#     'NAME': 'waltdatabase',
+# }
 
 AUTH_PASSWORD_VALIDATORS = [
     {
