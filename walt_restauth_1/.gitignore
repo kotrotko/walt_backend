@@ -1,0 +1,16 @@
+.idea/
+
+__pycache__/
+
+*.pyc
+*.pyo
+*.pyd
+
+#walt_restauth_1/settings.py
+
+.env
+
+*.log
+
+media/
+static/
