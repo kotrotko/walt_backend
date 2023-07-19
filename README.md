@@ -1,6 +1,5 @@
 # walt_backend
 
-README
 Project Title: Walt Restauth 1
 
 Project Goal: To create a backend for simple hiring application, which allows to find employers and employees. The frontend is implemented in Dart / Flutter and will be available separately.
