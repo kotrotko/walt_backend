@@ -10,4 +10,3 @@ This app is the python backend of app, which allows to share employer and job se
 As the name of the project suggests, it provides the two-roles token-based authentication. In addition to the regular token based authentication, the authentication via social media is available.
 
 In foreseen future, options for filtering, search and saving selected partners will be added, as well as the messaging for direct communication between employer and job seeker.
-![image](https://github.com/kotrotko/walt_backend/assets/28488170/78cf28fe-fbe8-45bf-9ffa-c2b59d091e1c)
