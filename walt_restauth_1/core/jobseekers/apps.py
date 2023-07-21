@@ -3,4 +3,4 @@ from django.apps import AppConfig
 
 class JobseekersConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'walt_restauth_1.jobseekers'
+    name = 'core.jobseekers'

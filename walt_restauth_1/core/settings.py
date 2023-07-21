@@ -30,7 +30,7 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
-    #'walt_restauth_1.accounts.models.EmailBackend',
+    #'core.accounts.models.EmailBackend',
 ]
 
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
@@ -78,9 +78,9 @@ INSTALLED_APPS = [
     'rest_framework.authtoken', # An extension of rest_framework that enables token-based authentication for API requests.
     'rest_framework_simplejwt', # Another extension of rest_framework that provides JSON Web Token (JWT) authentication for API requests.
 
-    'walt_restauth_1.accounts', # Custom app specific to this project, providing additional account-related functionality.
-    'walt_restauth_1.employers', # Another custom app specific to this project, dealing with employer-related functionality.
-    'walt_restauth_1.jobseekers', # A custom app specific to this project, likely focused on jobseeker-related functionality.
+    'core.accounts', # Custom app specific to this project, providing additional account-related functionality.
+    'core.employers', # Another custom app specific to this project, dealing with employer-related functionality.
+    'core.jobseekers', # A custom app specific to this project, likely focused on jobseeker-related functionality.
 ]
 
 LOGIN_URL = 'http://localhost:8000/accounts/login'
@@ -133,7 +133,7 @@ REST_USE_JWT = True
 
 SITE_ID = int(os.environ.get('SITE_ID', 1))
 
-ROOT_URLCONF = 'walt_restauth_1.urls'
+ROOT_URLCONF = 'core.urls'
 
 TEMPLATES = [
     {
@@ -151,7 +151,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'walt_restauth_1.wsgi.application'
+WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
     'default': {

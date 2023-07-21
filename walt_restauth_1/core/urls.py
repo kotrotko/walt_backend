@@ -6,7 +6,7 @@ from rest_framework_simplejwt import views as jwt_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/user/', include('walt_restauth_1.accounts.urls')),
+    path('api/user/', include('core.accounts.urls')),
 
     # Token-related URLs
     path('api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'), # This endpoint is to obtain a token pair (refresh token and access token) by providing valid credentials (username/email and password) in the request payload.
@@ -17,11 +17,11 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')), # These URLs are provided by the Allauth library and handle various authentication-related functionality, such as login, registration, password reset, etc.
 
     # Auth URLs (custom authentication URLs)
-    path('api/auth/', include('walt_restauth_1.accounts.urls')), # This prefix is used for custom authentication URLs defined in the accounts.urls module.
+    path('api/auth/', include('core.accounts.urls')), # This prefix is used for custom authentication URLs defined in the accounts.urls module.
 
     # Employers and Jobseekers URLs
-    path('employers/', include('walt_restauth_1.employers.urls')),
-    path('jobseekers/', include('walt_restauth_1.jobseekers.urls')),
+    path('employers/', include('core.employers.urls')),
+    path('jobseekers/', include('core.jobseekers.urls')),
 
     # Password Reset URLs
     path('password-reset/', PasswordResetView.as_view()),
