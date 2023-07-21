@@ -7,21 +7,21 @@ dotenv.load_dotenv()
 from django.core.exceptions import ImproperlyConfigured
 
 def get_env_setting(setting, default=None):
-    """ Get the environment setting or return exceptin """
+    """ Get the environment setting or return exception """
     try:
         return os.environ[setting]
+
     except KeyError:
         if default is not None:
             return default
         error_msg = "Set the %s env variable" % setting
         raise ImproperlyConfigured(error_msg)
 
-#BASE_DIR = Path(__file__).resolve().parent.parent
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRET_KEY = 'django-insecure-wlwnz6*j#ov)qyyvtrhst_ht79n8ou_d&e_j=r%ik@7hzeb%lq'
+SECRET_KEY = get_env_setting('SECRET_KEY')
 
-DEBUG = True
+DEBUG = get_env_setting('DEBUG')
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '[::1]']
 
@@ -43,7 +43,6 @@ ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 
 EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
-#EMAIL_FILE_PATH = BASE_DIR / "sent_emails"
 
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
@@ -55,34 +54,33 @@ EMAIL_CONFIRM_REDIRECT_BASE_URL = 'http://localhost:3000/email/confirm/'
 PASSWORD_RESET_CONFIRM_REDIRECT_BASE_URL = 'http://localhost:3000/password-reset/confirm/'
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+    'django.contrib.admin', # This app provides the Django administration interface, allowing to manage application's data through a web-based interface.
+    'django.contrib.auth', # Provides the authentication system for handling user authentication, permissions, and user groups.
+    'django.contrib.contenttypes', # Enables content types, which are used to track models' types and their relationships in a generic way.
+    'django.contrib.sessions', # Handles user sessions and allows you to store and retrieve arbitrary data on a per-site-visitor basis.
+    'django.contrib.messages', # Allows to store and display one-time messages (e.g., flash messages) for users.
+    'django.contrib.staticfiles', # Collect and serves static files, such as CSS, JavaScript, and images.
 
-    'django.contrib.sites',
+    'django.contrib.sites', # Provides a framework for handling multiple sites from a single Django installation.
 
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.facebook',
-    'allauth.socialaccount.providers.github',
+    'allauth', # This third-party app provides an integrated set of authentication and registration functionalities for handling user sign-up, login, and password management.
+    'allauth.account', # An extension of allauth that handles user account management, including email confirmation and password change.
+    'allauth.socialaccount', # An extension of allauth that allows users to authenticate via social media accounts.
+    'allauth.socialaccount.providers.facebook', # A provider for allauth.socialaccount that enables Facebook authentication.
+    'allauth.socialaccount.providers.github', # A provider for allauth.socialaccount that enables GitHub authentication.
 
-    'django_extensions',
-    'phonenumber_field',
+    'phonenumber_field', # Adds support for phone number fields to your models.
 
-    'dj_rest_auth',
-    'dj_rest_auth.registration',
+    'dj_rest_auth', # Provides RESTful API endpoints for authentication using Django Rest Framework.
+    'dj_rest_auth.registration', # An extension of dj_rest_auth that handles user registration through RESTful API endpoints.
 
-    'rest_framework',
-    'rest_framework.authtoken',
-    'rest_framework_simplejwt',
+    'rest_framework', # For building Web APIs using Django, providing features like serializers, views, and authentication.
+    'rest_framework.authtoken', # An extension of rest_framework that enables token-based authentication for API requests.
+    'rest_framework_simplejwt', # Another extension of rest_framework that provides JSON Web Token (JWT) authentication for API requests.
 
-    'walt_restauth_1.accounts',
-    'walt_restauth_1.employers',
-    'walt_restauth_1.jobseekers',
+    'walt_restauth_1.accounts', # Custom app specific to this project, providing additional account-related functionality.
+    'walt_restauth_1.employers', # Another custom app specific to this project, dealing with employer-related functionality.
+    'walt_restauth_1.jobseekers', # A custom app specific to this project, likely focused on jobseeker-related functionality.
 ]
 
 LOGIN_URL = 'http://localhost:8000/accounts/login'
@@ -133,7 +131,7 @@ REST_FRAMEWORK = {
 
 REST_USE_JWT = True
 
-SITE_ID = 1
+SITE_ID = int(os.environ.get('SITE_ID', 1))
 
 ROOT_URLCONF = 'walt_restauth_1.urls'
 
