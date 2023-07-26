@@ -73,6 +73,7 @@ INSTALLED_APPS = [
 
     'dj_rest_auth', # Provides RESTful API endpoints for authentication using Django Rest Framework.
     'dj_rest_auth.registration', # An extension of dj_rest_auth that handles user registration through RESTful API endpoints.
+    'drf_spectacular', # For Swagger
 
     'rest_framework', # For building Web APIs using Django, providing features like serializers, views, and authentication.
     'rest_framework.authtoken', # An extension of rest_framework that enables token-based authentication for API requests.
@@ -127,11 +128,22 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
         'rest_framework.permissions.IsAdminUser'
     ],
+
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
-REST_USE_JWT = True
-
 SITE_ID = int(os.environ.get('SITE_ID', 1))
+
+REST_USE_JWT = True
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Django DRF Walt',
+}
+
+# Http-only cookies:
+REST_AUTH = {
+    'USE_JWT': True,
+    'JWT_AUTH_COOKIE': 'jwt-auth',
+}
 
 ROOT_URLCONF = 'core.urls'
 

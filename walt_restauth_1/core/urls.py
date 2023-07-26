@@ -1,17 +1,25 @@
 from django.contrib import admin
 from django.urls import include, path
+
 from dj_rest_auth.views import PasswordResetView, PasswordResetConfirmView
 from rest_framework_simplejwt import views as jwt_views
+from rest_framework.routers import DefaultRouter
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
+from .accounts.views import UserRecordView
+
+router = DefaultRouter()
+router.register((r'user'), UserRecordView, basename='user')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/', include(router.urls)),
     path('api/user/', include('core.accounts.urls')),
 
     # Token-related URLs
     path('api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'), # This endpoint is to obtain a token pair (refresh token and access token) by providing valid credentials (username/email and password) in the request payload.
     path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'), # This endpoint is to refresh an expired access token by providing a valid refresh token in the request payload.
-    path('api/token/verify', jwt_views.TokenVerifyView.as_view(), name='token_verify'), # This endpoint is to verify the authenticity of an access token by providing a valid access token in the request payload.
+    path('api/token/verify/', jwt_views.TokenVerifyView.as_view(), name='token_verify'), # This endpoint is to verify the authenticity of an access token by providing a valid access token in the request payload.
 
     # allauth URLs
     path('accounts/', include('allauth.urls')), # These URLs are provided by the Allauth library and handle various authentication-related functionality, such as login, registration, password reset, etc.
@@ -25,5 +33,8 @@ urlpatterns = [
 
     # Password Reset URLs
     path('password-reset/', PasswordResetView.as_view()),
-    path('password-reset-confirm/<uid64>/<token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('password-reset-confirm/<int:uid64>/<str:token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/schema/docs/', SpectacularSwaggerView.as_view(url_name='schema')),
 ]

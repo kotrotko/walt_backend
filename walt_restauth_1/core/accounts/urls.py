@@ -7,7 +7,6 @@ from .views import UserRecordView
 
 urlpatterns = [
     # User-related URLs
-    path('', UserRecordView.as_view(), name='user_create'),
     path('user/', UserDetailsView.as_view(), name='rest_user_details'),
 
     # Registration and email verification UPLs

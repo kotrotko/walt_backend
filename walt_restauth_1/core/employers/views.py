@@ -19,6 +19,7 @@ class EmployerDetailView(RetrieveAPIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class EmployerListCreateView(ListCreateAPIView):
+    serializer_class = EmployerSerializer
     authentication_classes = []
     permission_classes = []
     queryset = Employer.objects.all()
@@ -38,4 +39,3 @@ class EmployerListCreateView(ListCreateAPIView):
             },
             status=status.HTTP_400_BAD_REQUEST
         )
-

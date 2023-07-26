@@ -2,12 +2,12 @@ from django.conf import settings
 from django.http import HttpResponseRedirect
 
 from rest_framework.exceptions import ValidationError
-from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.views import TokenViewBase, TokenRefreshView
+from drf_spectacular.utils import extend_schema
 
 from .serializers import CustomUserCreateSerializer, TokenObtainPairSerializer, PasswordResetSerializer
 from .models import CustomUser
@@ -26,13 +26,16 @@ class TokenRefreshAPIView(TokenRefreshView):
         return response
 
 
-class UserRecordView(APIView):
+# class UserRecordView(APIView):
+class UserRecordView(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]  # enables permission
     queryset = CustomUser.objects.all()
+    serializer_class = CustomUserCreateSerializer
 
+    @extend_schema(responses=CustomUserCreateSerializer)
     def post(self, request, *args, **kwargs):
-        serializer = CustomUserCreateSerializer(data=request.data)
+        serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
 
         # user = serializer.save()
