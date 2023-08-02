@@ -47,8 +47,8 @@ EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'stmp.mailgun.com'
-EMAIL_HOST_USER = 'postmaster@mg.kokserek.site'
-EMAIL_HOST_PASSWORD = 'c7f75ba47c9f4ab85b4710ab16c01a33-8889127d-b78a0f8f'
+EMAIL_HOST_USER = get_env_setting('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = get_env_setting('EMAIL_HOST_PASSWORD')
 
 EMAIL_CONFIRM_REDIRECT_BASE_URL = 'http://localhost:3000/email/confirm/'
 PASSWORD_RESET_CONFIRM_REDIRECT_BASE_URL = 'http://localhost:3000/password-reset/confirm/'
@@ -97,8 +97,8 @@ SOCIALACCOUNT_PROVIDERS = {
          },
     'github': {
         'APP': {
-            'client_id': '4f1d7d548d4102a7f973',
-            'secret': 'f4adb32bd32b12ca70b136c507c017a4b32dd0f6',
+            'client_id': get_env_setting('GITHUB_CLIENT_ID'),
+            'secret': get_env_setting('GITHUB_CLIENT_SECRET'),
         }
     },
     'google':
